@@ -10,9 +10,9 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 public class Main {
-    private static final String filePath = "assignment-grader\\src\\main\\resources\\assets";
-    private static final Path extractedJavaFiles = Paths.get("assignment-grader\\target\\unzipped");
-    private static final Path compiledFilesDirectory = Paths.get("assignment-grader\\target\\classes");
+    private static final String filePath = "src/main/resources/assets";
+    private static final Path extractedJavaFiles = Paths.get("target/unzipped");
+    private static final Path compiledFilesDirectory = Paths.get("./target/classes");
         private static char[] studentID;
         private static String fileName;
         
