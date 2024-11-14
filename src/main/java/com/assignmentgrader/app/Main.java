@@ -17,9 +17,9 @@ public class Main {
         private static String fileName;
         
             public static void main(String[] args) {
-                Extractor extractor = new ZipFileExtractor();
-                SubmissionExtractor handler = new SubmissionExtractor(extractor);
-        
+                ExtractorContext extractor = new ExtractorContext();
+                extractor.setExtractionStrategy(new ZipExtractorStrategy());
+
                 // extracts zip folders in src/main/resources/assets and puts java files in target/unzipped
                 File folder = new File(filePath);
                 if(folder.exists() && folder.isDirectory()) {
@@ -29,7 +29,7 @@ public class Main {
                             studentID = file.getName().substring(0,9).toCharArray();
                             fileName = file.getName().replaceAll("\\.zip$", "");
                             try {
-                                handler.extractSubmission(file.getAbsolutePath());
+                                extractor.extractSubmission(file.getAbsolutePath());
                             } catch (IOException e) {
                                 System.err.println("Error: " + e.getMessage());
                             }
