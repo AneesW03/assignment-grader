@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -38,8 +39,8 @@ public class Main {
                 }
                 
                 // compiles the extracted java files
-                JavaFileCompiler compiler = new JavaFileCompiler(extractedJavaFiles, compiledFilesDirectory);
-                compiler.compileJavaFiles();
+                CompilationFacade facade = new CompilationFacade(extractedJavaFiles, compiledFilesDirectory);
+                facade.compileAndLoadClass("ChatBot");
         
                 // evaluate
                 Evaluator chatBot = new ChatBotEvaluator();
@@ -48,24 +49,23 @@ public class Main {
                 
                 // load compiled classes and run evaluations
                 List<String> list1 = new ArrayList<>(), list2 = new ArrayList<>(), list3 = new ArrayList<>();
-                ClassLoader loader = new ClassLoader();
                 try {
-                    Class<?> chatBotClass = loader.loadClass("ChatBot");
-                    list1 = chatBot.runEvaluation(chatBotClass);
+                    Optional<Class<?>> chatBotClass = facade.compileAndLoadClass("ChatBot");
+                    //list1 = chatBot.runEvaluation(chatBotClass);
                 } catch (Exception e) {
                     System.err.println("Error: " + e.getMessage());
                 }
     
                 try {
-                    Class<?> chatBotPlatformClass = loader.loadClass("ChatBotPlatform");
-                    list2 = chatBotPlatform.runEvaluation(chatBotPlatformClass);
+                    //Class<?> chatBotPlatformClass = loader.loadClass("ChatBotPlatform");
+                    //list2 = chatBotPlatform.runEvaluation(chatBotPlatformClass);
                 } catch (Exception e) {
                     System.err.println("Error: " + e.getMessage());
                 }
     
                 try {
-                    Class<?> chatBotGeneratorClass = loader.loadClass("ChatBotGenerator");
-                    list3 = chatBotGenerator.runEvaluation(chatBotGeneratorClass);
+                    //Class<?> chatBotGeneratorClass = loader.loadClass("ChatBotGenerator");
+                    //list3 = chatBotGenerator.runEvaluation(chatBotGeneratorClass);
                 } catch (Exception e) {
                     System.err.println("Error: " + e.getMessage());
                 }
