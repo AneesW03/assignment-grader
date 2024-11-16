@@ -8,16 +8,15 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDate;
-import java.util.List;
 
 public class PDFReportGenerator {
     private static final float MARGIN = 50;
     private final Path outputDir;
     private final String studentID;
-    private final List<String> testResults; // List of pass/fail results
-    private final List<String> scoreResults;    // List of feedback messages for failed tests
+    private final String testResults;
+    private final String scoreResults;
 
-    public PDFReportGenerator(Path outputDir, char[] studentID, List<String> testResults, List<String> scoreResults) {
+    public PDFReportGenerator(Path outputDir, char[] studentID, String testResults, String scoreResults) {
         this.outputDir = outputDir;
         this.studentID = new String(studentID);
         this.testResults = testResults;
@@ -38,6 +37,8 @@ public class PDFReportGenerator {
             contentStream.showText("Evaluation Report for Student ID: " + studentID);
             contentStream.newLine();
             contentStream.showText("Date: " + LocalDate.now().toString());
+            contentStream.newLine();
+            contentStream.showText("Grade: " + scoreResults);
             contentStream.endText();
 
             // Test Results Section
@@ -46,50 +47,21 @@ public class PDFReportGenerator {
             contentStream.newLineAtOffset(MARGIN, 650);
             contentStream.showText("Test Results:");
             contentStream.endText();
-
-            contentStream.setFont(PDType1Font.HELVETICA, 12);
+            
+            contentStream.setFont(PDType1Font.HELVETICA, 11);
             contentStream.beginText();
             contentStream.newLineAtOffset(MARGIN, 630);
-            for (String result : testResults) {
-                contentStream.showText("- " + result);
-                contentStream.newLine();
-            }
-            contentStream.endText();
-
-            contentStream.setFont(PDType1Font.HELVETICA_BOLD,14);
-            contentStream.beginText();
-            contentStream.newLineAtOffset(MARGIN, 150);
-            contentStream.showText("Overall Score:");
-            contentStream.endText();
-
-            contentStream.setFont(PDType1Font.HELVETICA, 12);
-            contentStream.beginText();
-            contentStream.newLineAtOffset(MARGIN, 130);
-            for (String result : scoreResults) {
-                contentStream.showText("- " + result);
+            String[] lines = testResults.split("\n");
+            for (String line : lines) {
+                contentStream.showText(line);
                 contentStream.newLine();
             }
             contentStream.endText();
         }
 
-        // Save the PDF to the output directory
         Path filePath = outputDir.resolve("EvaluationReport_" + studentID + ".pdf");
         document.save(filePath.toFile());
         document.close();
         System.out.println("PDF report generated at: " + filePath.toAbsolutePath());
     }
-
-    // public static void main(String[] args) {
-    //     try {
-    //         Path outputDir = Path.of("assignment-grader\\src\\main\\resources");
-    //         String studentID = "816030569";
-    //         List<String> testResults = List.of("ChatBot class name: Passed", "ChatBot numResponsesGenerated field: Passed", "ChatBot generateResponse method: Failed");
-    //         List<String> scoreResults = List.of("generateResponse method should return a formatted response and increment response counter.");
-
-    //         //PDFReportGenerator reportGenerator = new PDFReportGenerator(outputDir, studentID, testResults, scoreResults);
-    //         //reportGenerator.generatePDFReport();
-    //     //} catch (IOException e) {
-    //     //    System.out.println("Error generating PDF report: " + e.getMessage());
-    //     //}
-    // //}
 }

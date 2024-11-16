@@ -1,36 +1,41 @@
 package com.assignmentgrader.app;
-
 import java.lang.reflect.*;
-import java.util.List;
-import java.util.ArrayList;
 
 public class ChatBotGeneratorEvaluator implements Evaluator {
-    private int marks = 0;
-    private List<String> testResults;
+    private final Class<?> chatBotGeneratorClass;
+
+    public ChatBotGeneratorEvaluator(Class<?> clazz) {
+        this.chatBotGeneratorClass = clazz;
+    }
 
     @Override
-    public List<String> runEvaluation(Class<?> chatBotGeneratorClass) {
-        if(!chatBotGeneratorClass.getSimpleName().equals("ChatBotGenerator")) {
-            System.err.println("Error: Class Name should be 'ChatBotGenerator'.");
-        }
-
-        String result;
-        testResults = new ArrayList<String>();
-        try {
-            Method generateChatBotLLM = chatBotGeneratorClass.getMethod("generateChatBotLLM", int.class);
-            if (generateChatBotLLM.getReturnType().getSimpleName().equals("ChatBot") && Modifier.isPublic(generateChatBotLLM.getModifiers()) && Modifier.isStatic(generateChatBotLLM.getModifiers())) {
-                result = "generateChatBotLLM(): correct return type, access modifier and ChatBot object returned... 3 marks";
-                marks += 3;
-                testResults.add(result);
-                // Test functionality of generateChatBotLLM for different LLMCode values
-               //evaluateGenerateChatBotLLMFunctionality(generateChatBotLLM);
-            }
-        } 
-        
-        catch (NoSuchMethodException e) {
-            System.out.println("Error: Missing required method - " + e.getMessage());
-        }
-
-        return testResults;
+    public EvaluationResult evaluate() {
+        EvaluationResult result = new EvaluationResult();
+        result.setClassName("ChatBotGenerator");
+        new MethodEvaluator().evaluate(result);
+        return result;
     }
+
+    private class MethodEvaluator {
+        private void evaluate(EvaluationResult result) {
+            try {
+                Method generateChatBotLLM = chatBotGeneratorClass.getMethod("generateChatBotLLM", int.class);
+                if (generateChatBotLLM.getReturnType() == String.class && Modifier.isPublic(generateChatBotLLM.getModifiers()) && Modifier.isStatic(generateChatBotLLM.getModifiers())) {
+                    if(((String) generateChatBotLLM.invoke(null, 1) == "LLaMa") && ((String) generateChatBotLLM.invoke(null, 2) == "Mistral7B")
+                        && ((String) generateChatBotLLM.invoke(null, 3) == "Bard") && ((String) generateChatBotLLM.invoke(null, 4) == "Claude")
+                        && ((String) generateChatBotLLM.invoke(null, 5) == "Solar") && ((String) generateChatBotLLM.invoke(null, 0) == "ChatGPT-3.5")) {
+                        
+                        result.addTestResults(7, "generateChatBotLLM(int): Correct return type, access modifier and chatBot for each input.");
+                    } else {
+                        result.addTestResults(2, "generateChatBotLLM(int): Incorrect chatBot for each input.");
+                    }
+                } else {
+                    result.addTestResults(0, "Incorrect return type and access modifier.");
+                }
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+    }
+
 }
