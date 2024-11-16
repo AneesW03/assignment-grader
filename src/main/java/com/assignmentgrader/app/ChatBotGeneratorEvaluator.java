@@ -33,7 +33,7 @@ public class ChatBotGeneratorEvaluator implements Evaluator {
                     result.addTestResults(0, "Incorrect return type and access modifier.");
                 }
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.println("generateChatBotLLM(int LLMCodeNumber): Error - " + e.getMessage());
             }
         }
     }

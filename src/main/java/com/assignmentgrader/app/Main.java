@@ -17,22 +17,21 @@ public class Main {
         ExtractorContext extractor = new ExtractorContext();
         extractor.setExtractionStrategy(new ZipExtractorStrategy());
 
+        // extract all zip files in src/main/resources/assets.
         File folder = new File(filePath);
         if(folder.exists() && folder.isDirectory()) {
             File[] files = folder.listFiles();
-            if( files != null ) {
-                for ( File file : files ) {
-                    //studentID = file.getName().substring(0,9).toCharArray();
-                    //fileName = file.getName().replaceAll("\\.zip$", "");
+            if(files != null) {
+                for (File file : files) {
                     try {
                         extractor.extractSubmission(file.getAbsolutePath());
-                    } catch (IOException e) {
-                        System.err.println("Error: " + e.getMessage());
+                    } catch (Exception e) {
+                        System.err.println("Error here: " + e.getMessage());
                     }
                 }
-            } 
+            }
         }
-        
+
         File extractedFolder = new File(extractedJavaFiles.toString());
         if(extractedFolder.exists() && extractedFolder.isDirectory()) {
             File[] files = extractedFolder.listFiles();
@@ -41,7 +40,7 @@ public class Main {
                     if (file.isDirectory()) {
                         studentID = file.getName().substring(0,9).toCharArray();
 
-                        Path javaFiles = Paths.get(file.getPath());
+                        Path javaFiles = Paths.get(file.getAbsolutePath());
                         Path classFiles = Paths.get("./target/classes");
 
                         CompilationFacade facade = new CompilationFacade(javaFiles, classFiles);
@@ -62,7 +61,7 @@ public class Main {
                                 System.out.println("Class does not exist...");
                             }
                         } catch (Exception e) {
-                            System.err.println("Error: " + e.getMessage());
+                            System.err.println("Error 1: " + e.getMessage());
                         }
                 
                         try {
@@ -77,7 +76,7 @@ public class Main {
                                 System.out.println("Class does not exist...");
                             }
                         } catch (Exception e) {
-                            System.err.println("Error: " + e.getMessage());
+                            System.err.println("Error 2: " + e.getMessage());
                         }
                 
                         try {
@@ -92,7 +91,7 @@ public class Main {
                                 System.out.println("Class does not exist...");
                             }
                         } catch (Exception e) {
-                            System.err.println("Error: " + e.getMessage());
+                            System.err.println("Error 3: " + e.getMessage());
                         }
                         
                         try {
@@ -107,7 +106,7 @@ public class Main {
                                 System.out.println("Class does not exist...");
                             }
                         } catch (Exception e) {
-                            System.err.println("Error: " + e.getMessage());
+                            System.err.println("Error 4: " + e.getMessage());
                         }
                 
                         try {
@@ -116,7 +115,7 @@ public class Main {
                             PDFReportGenerator reportGenerator = new PDFReportGenerator(outputDirectory, studentID, testResults, totalScore);
                             reportGenerator.generatePDFReport();
                         } catch (IOException e) {
-                            System.err.println("Error: " + e.getMessage());
+                            System.err.println("Error 5: " + e.getMessage());
                         }
                     }
                 }

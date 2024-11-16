@@ -30,7 +30,7 @@ public class ChatBotPlatformEvaluator implements Evaluator {
                     result.addTestResults(0, "bots: Incorrect type or access modifier.");
                 }
             } catch (NoSuchFieldException e) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.println("bots: Error - " + e.getMessage());
             }
         }
     }
@@ -50,7 +50,7 @@ public class ChatBotPlatformEvaluator implements Evaluator {
                     result.addTestResults(0, "ChatBotPlatform(): Incorrectly initialized bots collection.");
                 }
             } catch ( NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e ) {
-                System.out.println("Error in constructor evaluation: " + e.getMessage());
+                System.out.println("ChatBotPlatform(): Error - " + e.getMessage());
             }
         }
     }
@@ -64,14 +64,22 @@ public class ChatBotPlatformEvaluator implements Evaluator {
                 } else {
                     result.addTestResults(2, "addChatBot(int): Incorrect return type or access modifier.");
                 }
-               
+            } catch (NoSuchMethodException e) {
+                System.err.println("addChatBot(int LLMCode): Error - " + e.getMessage());
+            }
+
+            try {
                 Method getChatBotListMethod = chatBotPlatformClass.getMethod("getChatBotList");
                 if (getChatBotListMethod.getReturnType() == String.class && Modifier.isPublic(getChatBotListMethod.getModifiers())) {
                     result.addTestResults(6, "getChatBotList(): Correct return type and access modifier.");
                 } else {
                     result.addTestResults(0, "getChatBotList(): Incorrect return type or access modifier.");
                 }
-    
+            } catch (NoSuchMethodException e) {
+                System.err.println("getChatBotList(): Error - " + e.getMessage());
+            }
+
+            try {
                 Method interactWithBotMethod = chatBotPlatformClass.getMethod("interactWithBot", int.class, String.class);
                 if (interactWithBotMethod.getReturnType() == String.class && Modifier.isPublic(interactWithBotMethod.getModifiers())) {
                     result.addTestResults(5, "interactWithBot(int, String): Correct return type and access modifier.");
@@ -79,7 +87,7 @@ public class ChatBotPlatformEvaluator implements Evaluator {
                     result.addTestResults(0, "interactWithBot(int, String): Incorrect return type or access modifier.");
                 }
             } catch (NoSuchMethodException e) {
-                System.out.println("Error: " + e.getMessage());
+                System.err.println("interactWithBot(): Error - " + e.getMessage());
             }
         }
     }
