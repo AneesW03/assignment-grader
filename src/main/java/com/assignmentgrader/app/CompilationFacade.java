@@ -5,16 +5,21 @@ import java.util.Optional;
 public class CompilationFacade {
     private final JavaFileCompiler compiler;
     private final CustomClassLoader classLoader;
+    private Boolean success;
 
     public CompilationFacade(Path sourceDir, Path outputDir) {
         this.compiler = new JavaFileCompiler(sourceDir, outputDir);
         this.classLoader = new CustomClassLoader(outputDir.toString());
+        this.success = false;
     }
 
     public Optional<Class<?>> compileAndLoadClass(String className) {
         boolean compilationSuccess = compiler.compileJavaFiles();
         if(!compilationSuccess) {
             System.err.println("Compilation Failed...");
+            this.success = false;
+        } else {
+            this.success = true;
         }
         try {
             Class<?> loadedClass = classLoader.loadClass(className);
@@ -24,4 +29,10 @@ public class CompilationFacade {
             return Optional.empty();
         }
     }
+
+    public Boolean isSuccessful() {
+        return this.success;
+    }
+
+
 }

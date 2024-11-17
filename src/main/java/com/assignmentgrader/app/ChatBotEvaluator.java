@@ -9,9 +9,11 @@ import java.lang.reflect.Modifier;
 
 public class ChatBotEvaluator implements Evaluator {
     private final Class<?> chatBotClass;
+    private boolean passed;
 
     public ChatBotEvaluator(Class<?> clazz) {
         this.chatBotClass = clazz;
+        this.passed = true;
     }
 
     @Override
@@ -36,6 +38,7 @@ public class ChatBotEvaluator implements Evaluator {
                     result.addTestResults(1, "chatBotName: Correct attribute name and access modifier type.");
                 } else {
                     result.addTestResults(0, "chatBotName: Incorrect attribute name or access modifier type.");
+                    passed = false;
                 }
             } catch (NoSuchFieldException e) {
                 System.err.println("chatBotName: Error - " + e.getMessage());
@@ -47,6 +50,7 @@ public class ChatBotEvaluator implements Evaluator {
                     result.addTestResults(1, "numResponsesGenerated: Correct attribute name and access modifier type.");
                 } else {
                     result.addTestResults(0, "numResponsesGenerated: Incorrect attribute name or access modifier type.");
+                    passed = false;
                 }
             } catch (NoSuchFieldException e) {
                 System.err.println("numResponsesGenerated: Error - " + e.getMessage());
@@ -58,6 +62,7 @@ public class ChatBotEvaluator implements Evaluator {
                     result.addTestResults(3, "messageLimit: Correct attribute name, access modifier type, is fixed and initialized correctly.");
                 } else {
                     result.addTestResults(0, "messageLimit: Incorrect attribute name, access modifier type or initialization.");
+                    passed = false;
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 System.err.println("messageLimit: Error - " + e.getMessage());
@@ -69,6 +74,7 @@ public class ChatBotEvaluator implements Evaluator {
                     result.addTestResults(2, "messageNumber: Correct attribute name, access modifier type and initialization.");
                 } else {
                     result.addTestResults(0, "messageNumber: Incorrect attribute name, access modifier type or initialization.");
+                    passed = false;
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 System.err.println("messageNumber: Error - " + e.getMessage());
@@ -90,6 +96,7 @@ public class ChatBotEvaluator implements Evaluator {
                     result.addTestResults(3, "ChatBot(): Correct default chatBot object created.");
                 } else {
                     result.addTestResults(0, "ChatBot(): Incorrect default chatBot object created.");
+                    passed = false;
                 }
             } catch (NoSuchMethodException | NoSuchFieldException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 System.err.println("ChatBot(): Error - " + e.getMessage());
@@ -99,11 +106,13 @@ public class ChatBotEvaluator implements Evaluator {
                 Constructor<?> overLoadedConstructor = chatBotClass.getConstructor(int.class);
                 Object overLoadedInstance = overLoadedConstructor.newInstance(1);
                 chatBotNameField = chatBotClass.getDeclaredField("chatBotName");
+                chatBotNameField.setAccessible(true);
                 String chatBotName = (String) chatBotNameField.get(overLoadedInstance);
                 if ("LLaMa".equals(chatBotName)) {
                     result.addTestResults(3, "ChatBot(int): Correct chatBot object created.");
                 } else {
                     result.addTestResults(0, "ChatBot(int): Incorrect chatBot object created.");
+                    passed = false;
                 }
             } catch (NoSuchMethodException | NoSuchFieldException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 System.err.println("ChatBot(int LLMCode): Error - " + e.getMessage());
@@ -119,6 +128,7 @@ public class ChatBotEvaluator implements Evaluator {
                     result.addTestResults(1, "getChatBotName(): Correct return type and access modifier.");
                 } else {
                     result.addTestResults(0, "getChatBotName(): Incorrect return type or access modifier.");
+                    passed = false;
                 }
             } catch (NoSuchMethodException e) {
                 System.err.println("getChatBotName(): Error - " + e.getMessage());
@@ -130,6 +140,7 @@ public class ChatBotEvaluator implements Evaluator {
                     result.addTestResults(1, "getNumResponsesGenerated(): Correct return type and access modifier.");
                 } else {
                     result.addTestResults(0, "getNumResponsesGenerated(): Incorrect return type or access modifier.");
+                    passed = false;
                 }
             } catch (NoSuchMethodException e) {
                 System.err.println("getNumResponsesGenerated(): Error - " + e.getMessage());
@@ -141,6 +152,7 @@ public class ChatBotEvaluator implements Evaluator {
                     result.addTestResults(2, "getTotalNumResponsesGenerated(): Correct return type and access modifier and is a class method.");
                 } else {
                     result.addTestResults(0, "getTotalNumResponsesGenerated(): Incorrect return type, access modifier or is not a class method.");
+                    passed = false;
                 }
             } catch (NoSuchMethodException e) {
                 System.err.println("getTotalNumResponsesGenerated(): Error - " + e.getMessage());
@@ -152,6 +164,7 @@ public class ChatBotEvaluator implements Evaluator {
                     result.addTestResults(3, "getTotalNumMessagesRemaining(): Correct return type and access modifier and is a class method.");
                 } else {
                     result.addTestResults(0, "getTotalNumMessagesRemaining(): Incorrect return type, access modifier or is not a class method.");
+                    passed = false;
                 }
             } catch (NoSuchMethodException e) {
                 System.err.println("getTotalNumMessagesRemaining(): Error - " + e.getMessage());
@@ -163,6 +176,7 @@ public class ChatBotEvaluator implements Evaluator {
                     result.addTestResults(3, "limitReached(): Correct return type and access modifier.");
                 } else {
                     result.addTestResults(0, "limitReached(): Incorrect return type, access modifier or is not a class method.");
+                    passed = false;
                 }
             } catch (NoSuchMethodException e) {
                 System.err.println("limitReached(): Error - " + e.getMessage());
@@ -174,6 +188,7 @@ public class ChatBotEvaluator implements Evaluator {
                     result.addTestResults(5, "generateResponse(): Correct return type and access modifier.");
                 } else {
                     result.addTestResults(0, "generateResponse(): Incorrect return type or access modifier.");
+                    passed = false;
                 }
             } catch (NoSuchMethodException e) {
                 System.err.println("generateResponse(): Error - " + e.getMessage());
@@ -185,6 +200,7 @@ public class ChatBotEvaluator implements Evaluator {
                     result.addTestResults(4, "prompt(String): Correct return type and access modifier.");
                 } else {
                     result.addTestResults(0, "prompt(String): Incorrect return type or access modifier.");
+                    passed = false;
                 }
             } catch (NoSuchMethodException e) {
                 System.err.println("prompt(String requestMessage): Error - " + e.getMessage());
@@ -196,11 +212,17 @@ public class ChatBotEvaluator implements Evaluator {
                     result.addTestResults(4, "toString(): Correct return type and access modifier.");
                 } else {
                     result.addTestResults(0, "toString(): Incorrect return type or access modifier.");
+                    passed = false;
                 }
             } catch (NoSuchMethodException e) {
                 System.err.println("toString(): Error - " + e.getMessage());
             }
 
         }
+    }
+
+    @Override
+    public boolean isPassed() {
+        return this.passed;
     }
 }

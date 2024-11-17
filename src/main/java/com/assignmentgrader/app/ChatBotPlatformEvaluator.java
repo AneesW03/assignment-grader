@@ -5,9 +5,11 @@ import java.util.ArrayList;
 
 public class ChatBotPlatformEvaluator implements Evaluator {
     private final Class<?> chatBotPlatformClass;
+    private boolean passed;
 
     public ChatBotPlatformEvaluator(Class<?> clazz) {
         this.chatBotPlatformClass = clazz;
+        this.passed = true;
     }
 
     @Override
@@ -92,4 +94,8 @@ public class ChatBotPlatformEvaluator implements Evaluator {
         }
     }
 
+    @Override
+    public boolean isPassed() {
+        return this.passed;
+    }
 }

@@ -3,9 +3,11 @@ import java.lang.reflect.*;
 
 public class ChatBotGeneratorEvaluator implements Evaluator {
     private final Class<?> chatBotGeneratorClass;
+    private boolean passed;
 
     public ChatBotGeneratorEvaluator(Class<?> clazz) {
         this.chatBotGeneratorClass = clazz;
+        this.passed = true;
     }
 
     @Override
@@ -38,4 +40,8 @@ public class ChatBotGeneratorEvaluator implements Evaluator {
         }
     }
 
+    @Override
+    public boolean isPassed() {
+        return this.passed;
+    }
 }

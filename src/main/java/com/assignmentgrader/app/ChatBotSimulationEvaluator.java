@@ -12,11 +12,13 @@ public class ChatBotSimulationEvaluator implements Evaluator {
     private final ByteArrayOutputStream outputStreamCaptor;
     private final PrintStream originalOut = System.out;
     private final Path filePath;
+    private boolean passed;
 
     public ChatBotSimulationEvaluator(Class<?> clazz, Path filePath) {
         this.chatBotSimulationClass = clazz;
         this.outputStreamCaptor = new ByteArrayOutputStream();
         this.filePath = filePath;
+        this.passed = true;
     }
 
     @Override
@@ -72,5 +74,10 @@ public class ChatBotSimulationEvaluator implements Evaluator {
             }
 
         }
+    }
+
+    @Override
+    public boolean isPassed() {
+        return this.passed;
     }
 }
