@@ -10,9 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class JavaFileCompiler {
-
-    private final Path sourceDir;
-    private final Path outputDir;
+    private Path sourceDir;
+    private Path outputDir;
 
     public JavaFileCompiler(Path sourceDir, Path outputDir) {
         this.sourceDir = sourceDir;

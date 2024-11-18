@@ -18,6 +18,7 @@ public class ZipExtractorStrategy implements ExtractorStrategy {
                 if (entry.isDirectory()) {
                     outputFile.mkdirs();
                 }
+                
                 else {
                     outputFile.getParentFile().mkdirs();
 

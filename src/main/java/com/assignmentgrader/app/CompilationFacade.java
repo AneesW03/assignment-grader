@@ -3,9 +3,9 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 public class CompilationFacade {
-    private final JavaFileCompiler compiler;
-    private final CustomClassLoader classLoader;
-    private Boolean success;
+    private JavaFileCompiler compiler;
+    private CustomClassLoader classLoader;
+    private boolean success;
 
     public CompilationFacade(Path sourceDir, Path outputDir) {
         this.compiler = new JavaFileCompiler(sourceDir, outputDir);
@@ -30,9 +30,7 @@ public class CompilationFacade {
         }
     }
 
-    public Boolean isSuccessful() {
+    public boolean isSuccessful() {
         return this.success;
     }
-
-
 }

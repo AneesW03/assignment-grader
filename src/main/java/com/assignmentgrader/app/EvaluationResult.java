@@ -5,7 +5,7 @@ import java.util.List;
 
 public class EvaluationResult {
     private int totalScore;
-    private final List<String> testResults;
+    private List<String> testResults;
     private String className;
 
     public EvaluationResult() {

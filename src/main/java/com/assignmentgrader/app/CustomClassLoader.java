@@ -5,7 +5,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 public class CustomClassLoader {
-    private final String classPath;
+    private String classPath;
 
     public CustomClassLoader(String classPath) {
         this.classPath = classPath;
@@ -13,11 +13,14 @@ public class CustomClassLoader {
 
     public Class<?> loadClass(String className) throws Exception {
         File file = new File(classPath);
+        
         URL url = file.toURI().toURL();
         URL[] urls = new URL[]{url};
         
         try (URLClassLoader classLoader = new URLClassLoader(urls)) {
-            return classLoader.loadClass(className);
+            Class<?> clazz = classLoader.loadClass(className);
+            return clazz;
         }
     }
+
 }

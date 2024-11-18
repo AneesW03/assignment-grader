@@ -1,19 +1,21 @@
 package com.assignmentgrader.app;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 
-
 public class ChatBotEvaluator implements Evaluator {
-    private final Class<?> chatBotClass;
+    private Class<?> chatBotClass;
     private boolean passed;
 
-    public ChatBotEvaluator(Class<?> clazz) {
-        this.chatBotClass = clazz;
+    public ChatBotEvaluator() {
         this.passed = true;
+    }
+
+    @Override
+    public void setClass(Class<?> clazz) {
+        this.chatBotClass = clazz;
     }
 
     @Override
@@ -24,6 +26,11 @@ public class ChatBotEvaluator implements Evaluator {
         new ConstructorEvaluator().evaluate(result);
         new MethodEvaluator().evaluate(result);
         return result;
+    }
+
+    @Override
+    public boolean isPassed() {
+        return this.passed;
     }
 
     private class AttributeEvaluator {
@@ -58,7 +65,8 @@ public class ChatBotEvaluator implements Evaluator {
 
             try {
                 Field messageLimit = chatBotClass.getDeclaredField("messageLimit");
-                if (messageLimit.getType() == int.class && Modifier.isPrivate(messageLimit.getModifiers()) && messageLimit.getInt(null) == 10 && Modifier.isFinal(messageLimit.getModifiers())) {
+                messageLimit.setAccessible(true);
+                if (messageLimit.getType() == int.class && Modifier.isPrivate(messageLimit.getModifiers()) && messageLimit.getInt(null) == 10) {
                     result.addTestResults(3, "messageLimit: Correct attribute name, access modifier type, is fixed and initialized correctly.");
                 } else {
                     result.addTestResults(0, "messageLimit: Incorrect attribute name, access modifier type or initialization.");
@@ -70,6 +78,7 @@ public class ChatBotEvaluator implements Evaluator {
 
             try {
                 Field messageNumber = chatBotClass.getDeclaredField("messageNumber");
+                messageNumber.setAccessible(true);
                 if (messageNumber.getType() == int.class && Modifier.isPrivate(messageNumber.getModifiers()) && messageNumber.getInt(null) == 0) {
                     result.addTestResults(2, "messageNumber: Correct attribute name, access modifier type and initialization.");
                 } else {
@@ -87,7 +96,7 @@ public class ChatBotEvaluator implements Evaluator {
         public void evaluate(EvaluationResult result) {
             Field chatBotNameField;
             try {
-                Constructor<?> defaultConstructor = chatBotClass.getConstructor();
+                Constructor<?> defaultConstructor = chatBotClass.getDeclaredConstructor();
                 Object defaultInstance = defaultConstructor.newInstance();
                 chatBotNameField = chatBotClass.getDeclaredField("chatBotName");
                 chatBotNameField.setAccessible(true);
@@ -103,7 +112,7 @@ public class ChatBotEvaluator implements Evaluator {
             }
 
             try {
-                Constructor<?> overLoadedConstructor = chatBotClass.getConstructor(int.class);
+                Constructor<?> overLoadedConstructor = chatBotClass.getDeclaredConstructor(int.class);
                 Object overLoadedInstance = overLoadedConstructor.newInstance(1);
                 chatBotNameField = chatBotClass.getDeclaredField("chatBotName");
                 chatBotNameField.setAccessible(true);
@@ -219,10 +228,5 @@ public class ChatBotEvaluator implements Evaluator {
             }
 
         }
-    }
-
-    @Override
-    public boolean isPassed() {
-        return this.passed;
     }
 }

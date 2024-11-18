@@ -1,20 +1,18 @@
 package com.assignmentgrader.app;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDate;
 
 public class PDFReportGenerator {
     private static final float MARGIN = 50;
-    private final Path outputDir;
-    private final String studentID;
-    private final String testResults;
-    private final String scoreResults;
+    private Path outputDir;
+    private String studentID;
+    private String testResults;
+    private String scoreResults;
 
     public PDFReportGenerator(Path outputDir, char[] studentID, String testResults, String scoreResults) {
         this.outputDir = outputDir;

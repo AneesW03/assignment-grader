@@ -1,15 +1,18 @@
 package com.assignmentgrader.app;
-
 import java.lang.reflect.*;
 import java.util.ArrayList;
 
 public class ChatBotPlatformEvaluator implements Evaluator {
-    private final Class<?> chatBotPlatformClass;
+    private Class<?> chatBotPlatformClass;
     private boolean passed;
 
-    public ChatBotPlatformEvaluator(Class<?> clazz) {
-        this.chatBotPlatformClass = clazz;
+    public ChatBotPlatformEvaluator() {
         this.passed = true;
+    }
+
+    @Override 
+    public void setClass(Class<?> clazz) {
+        this.chatBotPlatformClass = clazz;
     }
 
     @Override
@@ -20,6 +23,11 @@ public class ChatBotPlatformEvaluator implements Evaluator {
         new ConstructorEvaluator().evaluate(result);
         new MethodEvaluator().evaluate(result);
         return result;
+    }
+
+    @Override
+    public boolean isPassed() {
+        return this.passed;
     }
 
     private class AttributeEvaluator {
@@ -92,10 +100,5 @@ public class ChatBotPlatformEvaluator implements Evaluator {
                 System.err.println("interactWithBot(): Error - " + e.getMessage());
             }
         }
-    }
-
-    @Override
-    public boolean isPassed() {
-        return this.passed;
     }
 }

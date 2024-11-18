@@ -2,12 +2,16 @@ package com.assignmentgrader.app;
 import java.lang.reflect.*;
 
 public class ChatBotGeneratorEvaluator implements Evaluator {
-    private final Class<?> chatBotGeneratorClass;
+    private Class<?> chatBotGeneratorClass;
     private boolean passed;
 
-    public ChatBotGeneratorEvaluator(Class<?> clazz) {
-        this.chatBotGeneratorClass = clazz;
+    public ChatBotGeneratorEvaluator() {
         this.passed = true;
+    }
+
+    @Override
+    public void setClass(Class<?> clazz) {
+        this.chatBotGeneratorClass = clazz;
     }
 
     @Override
@@ -16,6 +20,11 @@ public class ChatBotGeneratorEvaluator implements Evaluator {
         result.setClassName("ChatBotGenerator");
         new MethodEvaluator().evaluate(result);
         return result;
+    }
+
+    @Override
+    public boolean isPassed() {
+        return this.passed;
     }
 
     private class MethodEvaluator {
@@ -38,10 +47,5 @@ public class ChatBotGeneratorEvaluator implements Evaluator {
                 System.out.println("generateChatBotLLM(int LLMCodeNumber): Error - " + e.getMessage());
             }
         }
-    }
-
-    @Override
-    public boolean isPassed() {
-        return this.passed;
     }
 }

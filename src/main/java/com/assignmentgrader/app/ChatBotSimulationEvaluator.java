@@ -8,17 +8,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class ChatBotSimulationEvaluator implements Evaluator {
-    private final Class<?> chatBotSimulationClass;
-    private final ByteArrayOutputStream outputStreamCaptor;
-    private final PrintStream originalOut = System.out;
-    private final Path filePath;
+    private Class<?> chatBotSimulationClass;
+    private ByteArrayOutputStream outputStreamCaptor;
+    private PrintStream originalOut;
+    private Path filePath;
     private boolean passed;
 
-    public ChatBotSimulationEvaluator(Class<?> clazz, Path filePath) {
-        this.chatBotSimulationClass = clazz;
+    public ChatBotSimulationEvaluator(Path filePath) {
         this.outputStreamCaptor = new ByteArrayOutputStream();
         this.filePath = filePath;
         this.passed = true;
+        this.originalOut = System.out;
+    }
+
+    @Override
+    public void setClass(Class<?> clazz) {
+        this.chatBotSimulationClass = clazz;
     }
 
     @Override
@@ -29,13 +34,18 @@ public class ChatBotSimulationEvaluator implements Evaluator {
         return result;
     }
 
+    @Override
+    public boolean isPassed() {
+        return this.passed;
+    }
+
     private class TestEvaluator {
         private void evaluate(EvaluationResult result) {
             String output = "";
             String fileContent = "";
             try {
                 System.setOut(new PrintStream(outputStreamCaptor));
-                Method main = chatBotSimulationClass.getMethod("main", String[].class);
+                Method main = chatBotSimulationClass.getDeclaredMethod("main", String[].class);
                 main.invoke(null, (Object) new String[]{});
                 output = outputStreamCaptor.toString();
                 System.setOut(originalOut);
@@ -72,12 +82,6 @@ public class ChatBotSimulationEvaluator implements Evaluator {
             if (fileContent.contains("getChatBotList());")) {
                 result.addTestResults(2, "Prints final list of ChatBots in ChatBotPlatform.");
             }
-
         }
-    }
-
-    @Override
-    public boolean isPassed() {
-        return this.passed;
     }
 }
