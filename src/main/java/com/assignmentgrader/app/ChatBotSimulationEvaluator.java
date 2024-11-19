@@ -7,6 +7,10 @@ import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * Evaluator for testing the ChatBotSimulation class.
+ * Validates the class's functionality based on its output and the provided specifications.
+ */
 public class ChatBotSimulationEvaluator implements Evaluator {
     private Class<?> chatBotSimulationClass;
     private ByteArrayOutputStream outputStreamCaptor;
@@ -14,6 +18,11 @@ public class ChatBotSimulationEvaluator implements Evaluator {
     private Path filePath;
     private boolean passed;
 
+    /**
+     * Constructs a new {@code ChatBotSimulationEvaluator}.
+     *
+     * @param filePath The path of the ChatBotSimulation source file.
+     */
     public ChatBotSimulationEvaluator(Path filePath) {
         this.outputStreamCaptor = new ByteArrayOutputStream();
         this.filePath = filePath;
@@ -39,6 +48,9 @@ public class ChatBotSimulationEvaluator implements Evaluator {
         return this.passed;
     }
 
+    /**
+     * Evaluates the output and functionality of the ChatBotSimulation class.
+     */
     private class TestEvaluator {
         private void evaluate(EvaluationResult result) {
             String output = "";

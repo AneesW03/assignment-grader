@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDate;
 
+/**
+ * Generates a PDF report containing evaluation results for a student's submission.
+ * Utilizes Apache PDFBox to create and format the PDF document.
+ */
 public class PDFReportGenerator {
     private static final float MARGIN = 50;
     private Path outputDir;
@@ -14,6 +18,14 @@ public class PDFReportGenerator {
     private String testResults;
     private String scoreResults;
 
+    /**
+     * Constructs a {@code PDFReportGenerator} with the specified parameters.
+     *
+     * @param outputDir    The directory where the generated PDF will be saved.
+     * @param studentID    The ID of the student for whom the report is generated.
+     * @param testResults  The evaluation results to include in the report.
+     * @param scoreResults The final score of the evaluation.
+     */
     public PDFReportGenerator(Path outputDir, char[] studentID, String testResults, String scoreResults) {
         this.outputDir = outputDir;
         this.studentID = new String(studentID);
@@ -21,6 +33,17 @@ public class PDFReportGenerator {
         this.scoreResults = scoreResults;
     }
 
+    /**
+     * Generates a PDF report for the student's evaluation.
+     * 
+     * The PDF includes:
+     * - Student ID
+     * - Date of the report
+     * - Final grade (score)
+     * - Detailed test results
+     *
+     * @throws IOException If an I/O error occurs while creating or saving the PDF.
+     */
     public void generatePDFReport() throws IOException {
         // Create a new PDF document
         PDDocument document = new PDDocument();

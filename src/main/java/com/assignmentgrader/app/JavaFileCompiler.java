@@ -9,15 +9,31 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A utility class for compiling Java source files.
+ * Uses the Java Compiler API to compile `.java` files from a specified source directory
+ * and outputs the compiled `.class` files to a specified output directory.
+ */
 public class JavaFileCompiler {
     private Path sourceDir;
     private Path outputDir;
 
+    /**
+     * Constructs a {@code JavaFileCompiler} with the specified source and output directories.
+     *
+     * @param sourceDir The directory containing the Java source files to compile.
+     * @param outputDir The directory where compiled `.class` files should be stored.
+     */
     public JavaFileCompiler(Path sourceDir, Path outputDir) {
         this.sourceDir = sourceDir;
         this.outputDir = outputDir;
     }
 
+    /**
+     * Compiles all Java source files in the source directory.
+     *
+     * @return {@code true} if compilation succeeds; {@code false} otherwise.
+     */
     public boolean compileJavaFiles() {
         try {
             Files.createDirectories(outputDir);
@@ -56,6 +72,12 @@ public class JavaFileCompiler {
         }
     }
 
+     /**
+     * Finds all `.java` files in the given directory and its subdirectories.
+     *
+     * @param directory The root directory to search for Java source files.
+     * @return A list of Java source files found in the directory.
+     */
     private List<File> findJavaFiles(Path directory) {
         try {
             return Files.walk(directory)

@@ -5,10 +5,17 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 
+/**
+ * Evaluator for testing the ChatBot class.
+ * Validates attributes, constructors, and methods of the ChatBot class based on specifications.
+ */
 public class ChatBotEvaluator implements Evaluator {
     private Class<?> chatBotClass;
     private boolean passed;
 
+    /**
+     * Constructs a new {@code ChatBotEvaluator} with a default passed state of true.
+     */
     public ChatBotEvaluator() {
         this.passed = true;
     }
@@ -33,6 +40,9 @@ public class ChatBotEvaluator implements Evaluator {
         return this.passed;
     }
 
+    /**
+     * Evaluates attributes of the ChatBot class.
+     */
     private class AttributeEvaluator {
         public void evaluate(EvaluationResult result) {
             if(!chatBotClass.getSimpleName().equals("ChatBot")) {
@@ -92,6 +102,9 @@ public class ChatBotEvaluator implements Evaluator {
         }
     }
 
+    /**
+     * Evaluates constructors of the ChatBot class.
+     */
     private class ConstructorEvaluator {
         public void evaluate(EvaluationResult result) {
             Field chatBotNameField;
@@ -129,6 +142,9 @@ public class ChatBotEvaluator implements Evaluator {
         }
     }
 
+     /**
+     * Evaluates methods of the ChatBot class.
+     */
     private class MethodEvaluator {
         public void evaluate(EvaluationResult result) {
             try {

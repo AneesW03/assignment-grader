@@ -2,10 +2,17 @@ package com.assignmentgrader.app;
 import java.lang.reflect.*;
 import java.util.ArrayList;
 
+/**
+ * Evaluator for testing the ChatBotPlatform class.
+ * Validates attributes, constructors, and methods of the ChatBotPlatform class based on specifications.
+ */
 public class ChatBotPlatformEvaluator implements Evaluator {
     private Class<?> chatBotPlatformClass;
     private boolean passed;
 
+    /**
+     * Constructs a new {@code ChatBotPlatformEvaluator} with a default passed state of true.
+     */
     public ChatBotPlatformEvaluator() {
         this.passed = true;
     }
@@ -30,6 +37,9 @@ public class ChatBotPlatformEvaluator implements Evaluator {
         return this.passed;
     }
 
+    /**
+     * Evaluates attributes of the ChatBotPlatform class.
+     */
     private class AttributeEvaluator {
         private void evaluate(EvaluationResult result) {
             try {
@@ -45,6 +55,9 @@ public class ChatBotPlatformEvaluator implements Evaluator {
         }
     }
 
+    /**
+     * Evaluates constructors of the ChatBotPlatform class.
+     */
     private class ConstructorEvaluator {
         private void evaluate(EvaluationResult result) {
             try {
@@ -65,6 +78,9 @@ public class ChatBotPlatformEvaluator implements Evaluator {
         }
     }
 
+    /**
+     * Evaluates methods of the ChatBotPlatform class.
+     */
     private class MethodEvaluator {
         private void evaluate(EvaluationResult result) {
             try {
@@ -72,7 +88,7 @@ public class ChatBotPlatformEvaluator implements Evaluator {
                 if (addChatBotMethod.getReturnType() == boolean.class && Modifier.isPublic(addChatBotMethod.getModifiers())) {
                     result.addTestResults(5, "addChatBot(int): Correct return type and access modifier");
                 } else {
-                    result.addTestResults(2, "addChatBot(int): Incorrect return type or access modifier.");
+                    result.addTestResults(0, "addChatBot(int): Incorrect return type or access modifier.");
                 }
             } catch (NoSuchMethodException e) {
                 System.err.println("addChatBot(int LLMCode): Error - " + e.getMessage());

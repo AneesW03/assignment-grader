@@ -3,7 +3,21 @@ import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+/**
+ * Implementation of {@link ExtractorStrategy} for extracting ZIP files.
+ * Supports extracting nested ZIP files and filters specific file types (e.g., `.java`).
+ */
 public class ZipExtractorStrategy implements ExtractorStrategy {
+    /**
+     * Extracts the contents of a ZIP file to the specified destination directory.
+     * - Creates directories for nested folders.
+     * - Extracts `.zip` files recursively into their own directories.
+     * - Extracts `.java` files while preserving their directory structure.
+     *
+     * @param filePath    The path of the ZIP file to extract.
+     * @param destination The directory where the extracted content should be placed.
+     * @throws IOException If an I/O error occurs during extraction.
+     */
     @Override
     public void extract (String filePath, File destination) throws IOException {
         if (!destination.exists()) {

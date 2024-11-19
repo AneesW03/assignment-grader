@@ -1,17 +1,33 @@
 package com.assignmentgrader.app;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 
+/**
+ * Entry point for the Assignment Grader application.
+ * 
+ * This application automates the process of:
+ * - Extracting ZIP submissions from a directory.
+ * - Compiling and loading student Java files.
+ * - Evaluating submissions against specified criteria using evaluators.
+ * - Generating PDF reports with evaluation results for each submission.
+ * 
+ * The application assumes a specific directory structure for ZIP submissions
+ * and processes each submission independently.
+ */
 public class Main {
     private static String filePath = "src/main/resources/assets";
     private static Path extractedJavaFiles = Paths.get("target/unzipped");
     private static Path compiledFilesDirectory = Paths.get("target/classes");
     private static char[] studentID;
 
+    /**
+     * Main method to execute the grading process.
+     * 
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         boolean testSuccess = true;
         boolean compilationSuccess = true;
@@ -94,7 +110,15 @@ public class Main {
             deleteClassFiles(compiledFilesDirectory);
         }
     }
-                
+    
+    /**
+     * Runs evaluation for a given class using the specified evaluator.
+     *
+     * @param className The name of the class to evaluate.
+     * @param eval      The {@link Evaluator} to use for evaluation.
+     * @param facade    The {@link CompilationFacade} used to compile and load the class.
+     * @return The evaluation result.
+     */
     private static EvaluationResult runEvaluation(String className, Evaluator eval, CompilationFacade facade) {
         EvaluationResult result = new EvaluationResult();
         Optional<Class<?>> clazz = facade.compileAndLoadClass(className);
@@ -111,6 +135,11 @@ public class Main {
         return null;
     }
 
+    /**
+     * Deletes all `.class` files from the specified directory.
+     *
+     * @param directory The directory to clean.
+     */
     private static void deleteClassFiles(Path directory) {
         File file = new File(directory.toString());
         if (file.exists() && file.isDirectory()) {
@@ -123,6 +152,12 @@ public class Main {
         }
     }
 
+    /**
+     * Retrieves all student submission directories from the specified directory.
+     *
+     * @param directory The directory containing submission folders.
+     * @return An array of submission directories, or {@code null} if none are found.
+     */
     private static File[] getSubmissions(Path directory) {
         File file = new File(directory.toString());
         if (file.exists() && file.isDirectory()) {

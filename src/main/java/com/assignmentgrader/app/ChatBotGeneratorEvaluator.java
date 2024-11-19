@@ -1,10 +1,17 @@
 package com.assignmentgrader.app;
 import java.lang.reflect.*;
 
+/**
+ * Evaluator for testing the ChatBotGenerator class.
+ * Validates the method generateChatBotLLM based on specifications.
+ */
 public class ChatBotGeneratorEvaluator implements Evaluator {
     private Class<?> chatBotGeneratorClass;
     private boolean passed;
 
+    /**
+     * Constructs a new {@code ChatBotGeneratorEvaluator} with a default passed state of true.
+     */
     public ChatBotGeneratorEvaluator() {
         this.passed = true;
     }
@@ -27,6 +34,9 @@ public class ChatBotGeneratorEvaluator implements Evaluator {
         return this.passed;
     }
 
+    /**
+     * Evaluates methods of the ChatBotGenerator class.
+     */
     private class MethodEvaluator {
         private void evaluate(EvaluationResult result) {
             try {
