@@ -1,4 +1,5 @@
 package com.assignmentgrader.app;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -60,28 +61,28 @@ public class Main {
             CompilationFacade facade = new CompilationFacade(javaFiles, compiledFilesDirectory);
             EvaluationResult result = new EvaluationResult();
 
-            Evaluator chatBotEvaluator = new ChatBotEvaluator();
+            EvaluatorTemplate chatBotEvaluator = new ChatBotEvaluator();
             result = runEvaluation("ChatBot", chatBotEvaluator, facade);
             testResults += result.toPDFString();
             score += result.getTotalScore();
             if(result.getTotalScore() != 36) { testSuccess = false; }
             if(!facade.isSuccessful()) { compilationSuccess = false; } 
                             
-            Evaluator chatBotPlatformEvaluator = new ChatBotPlatformEvaluator();
+            EvaluatorTemplate chatBotPlatformEvaluator = new ChatBotPlatformEvaluator();
             result = runEvaluation("ChatBotPlatform", chatBotPlatformEvaluator, facade);
             testResults += result.toPDFString();
             score += result.getTotalScore();
             if(result.getTotalScore() != 20) { testSuccess = false; }
             if(!facade.isSuccessful()) { compilationSuccess = false; } 
                             
-            Evaluator chatBotGeneratorEvaluator = new ChatBotGeneratorEvaluator();
+            EvaluatorTemplate chatBotGeneratorEvaluator = new ChatBotGeneratorEvaluator();
             result = runEvaluation("ChatBotGenerator", chatBotGeneratorEvaluator, facade);
             testResults += result.toPDFString();
             score += result.getTotalScore();
             if(result.getTotalScore() != 7) { testSuccess = false; }
             if(!facade.isSuccessful()) { compilationSuccess = false; } 
                             
-            Evaluator chatBotSimulationEvaluator = new ChatBotSimulationEvaluator(simulationFilePath);
+            EvaluatorTemplate chatBotSimulationEvaluator = new ChatBotSimulationEvaluator(simulationFilePath);
             result = runEvaluation("ChatBotSimulation", chatBotSimulationEvaluator, facade);
             testResults += result.toPDFString();
             score += result.getTotalScore();
@@ -119,7 +120,7 @@ public class Main {
      * @param facade    The {@link CompilationFacade} used to compile and load the class.
      * @return The evaluation result.
      */
-    private static EvaluationResult runEvaluation(String className, Evaluator eval, CompilationFacade facade) {
+    private static EvaluationResult runEvaluation(String className, EvaluatorTemplate eval, CompilationFacade facade) {
         EvaluationResult result = new EvaluationResult();
         Optional<Class<?>> clazz = facade.compileAndLoadClass(className);
         if(facade.isSuccessful()) {
