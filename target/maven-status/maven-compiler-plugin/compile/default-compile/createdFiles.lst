@@ -11,3 +11,4 @@ com\assignmentgrader\app\ExtractorContext.class
 com\assignmentgrader\app\JavaFileCompiler.class
 com\assignmentgrader\app\ExtractorStrategy.class
 com\assignmentgrader\app\PDFReportGenerator.class
+com\assignmentgrader\app\EvaluatorTemplate.class

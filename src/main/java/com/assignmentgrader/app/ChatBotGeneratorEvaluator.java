@@ -19,7 +19,6 @@ public class ChatBotGeneratorEvaluator extends EvaluatorTemplate {
                 if(((String) generateChatBotLLM.invoke(null, 1) == "LLaMa") && ((String) generateChatBotLLM.invoke(null, 2) == "Mistral7B")
                     && ((String) generateChatBotLLM.invoke(null, 3) == "Bard") && ((String) generateChatBotLLM.invoke(null, 4) == "Claude")
                     && ((String) generateChatBotLLM.invoke(null, 5) == "Solar") && ((String) generateChatBotLLM.invoke(null, 0) == "ChatGPT-3.5")) {
-                    
                     result.addTestResults(7, "generateChatBotLLM(int): Correct return type, access modifier and chatBot for each input.");
                 } else {
                     result.addTestResults(2, "generateChatBotLLM(int): Incorrect chatBot for each input.");

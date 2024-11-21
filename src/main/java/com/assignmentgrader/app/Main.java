@@ -131,7 +131,8 @@ public class Main {
                 return result;
             }
         } else {
-            System.out.println(className + " does not exist.");
+            result.addTestResults(0, "Does Not Compile");
+            return result;
         }
         return null;
     }
